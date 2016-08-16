@@ -1,0 +1,79 @@
+---
+title: "Navies Bayies  Therom"
+author: "Big Datamatica"
+date: "16 August 2016"
+output: html_document
+---
+
+
+## Including RODBC library
+# 
+```{r}
+
+-echo "options(repos = c(CRAN = "https://cran.rstudio.com"))" >.Rprofile
+install.packages(c("lattice","ggplot2","caret","reshape2"),repos = "http://http://cran.us.r-project.org/",dependencies = TRUE)
+
+install.packages("lmtest", repos = "http://cran.us.r-project.org")
+
+install.packages("RODBC")
+install.packages("lmtest")
+library(ggplot2)
+library("lmtest")
+
+library("lattice")
+library("ggplot2")
+library(RODBC)
+library("reshape2")
+library("caret")
+
+```
+ 
+# We can show the iris data with this command, just type "iris" for show the all data 
+
+```{r}
+
+getwd()
+getwd()
+setwd("E:/R ALGORITHM/UBCF(User-based collaborative filtering)")
+iris<-read.csv("Flipkart.csv",header=TRUE)
+dim(iris)
+names(iris)
+
+```
+
+```{r}
+
+x = Flipkart[,-5]
+y = Flipkart$Prod
+
+```
+
+
+```{r}
+model = train(x,y,'nb',trControl=trainControl(method='cv',number=10))
+```
+
+
+```{r}
+ predict(model$finalModel,x)
+
+```
+
+
+
+```{r}
+predict(model$finalModel,x)$class
+
+```
+
+```{r}
+table(predict(model$finalModel,x)$class,y)
+
+```
+
+```{r}
+naive_iris <- NaiveBayes(iris$Prod ~ ., data = iris)
+plot(naive_Flipkart)
+```
+
+

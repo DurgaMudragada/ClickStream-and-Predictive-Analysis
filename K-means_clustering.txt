@@ -1,0 +1,95 @@
+---
+title: "K Means  Clustering"
+author: "Big Datamatica"
+date: "16 August 2016"
+output: html_document
+---
+
+############################### 
+##### K-Means Clustering ######
+###############################
+
+
+# Set data path as per your data file location
+
+```{r}
+getwd()
+setwd("E:/R ALGORITHM/UBCF(User-based collaborative filtering)")
+```
+
+
+
+
+# Read the file along with header
+
+```{r}
+Age_income<-read.csv("Age_income.csv",header=TRUE)
+print(Age_income)
+```
+
+
+
+
+
+```{r}
+AP<-read.csv("Amazon_products.csv",header=TRUE)
+print(AP)
+
+AP1<-AP[,-c(2,4,7)]
+AP1<-AP1[,-c(2)]
+```
+
+```{r}
+dim(AP1)
+APclust<-kmeans(AP1,3)
+APclust1<-cbind(AP1,APclust$cluster)
+plot(AP1,col=APclust$cluster)
+
+```
+
+
+
+
+# The data given by x are clustered by the k-means method, which aims to partition the points into k groups such that the sum of squares from points to the assigned cluster centres is minimized. At the minimum, all cluster centres are at the mean of their Voronoi sets (the set of data points which are nearest to the cluster centre).
+
+# Value
+
+# kmeans returns an object of class "kmeans" which has a print and a fitted method. It
+
+# is a list with at least the following components:
+
+# cluster A vector of integers (from 1:k) indicating the cluster to which each point is
+
+# centers A matrix of cluster centres.
+
+# totss The total sum of squares.
+
+# withinss Vector of within-cluster sum of squares, one component per cluster.
+
+# tot.withinss Total within-cluster sum of squares, i.e. sum(withinss).
+
+# betweenss The between-cluster sum of squares, i.e. totss-tot.withinss.
+
+# size The number of points in each cluster.
+
+# iter The number of (outer) iterations.
+
+# ifault integer: indicator of a possible algorithm problem – for experts.
+
+# Implementing  K_means  clustering Model
+```{r}
+clust<-kmeans(Age_income,3)
+summary(clust)
+Age_income1<-cbind(Age_income,clust$cluster)
+plot(Age_income,col=clust$cluster)
+points(clust$centers,col=1:2,pch=8,cex=2)
+```
+
+
+
+
+
+
+
+
+

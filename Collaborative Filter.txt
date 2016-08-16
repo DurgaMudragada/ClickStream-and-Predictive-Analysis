@@ -1,0 +1,103 @@
+###############################
+### collaborative filtering ###
+###############################
+
+
+# Set data path as per your data file location
+
+
+getwd()
+setwd("E:/R ALGORITHM/UBCF(User-based collaborative filtering)")
+
+
+
+
+install.packages(c("recommenderlab","reshape2","ggplot2","reshape2"),repos = "https://cloud.r-project.org/")
+
+library("recommenderlab")
+library("ggplot2")
+library("plyr")
+library("dplyr")
+library("base")
+library("stats")
+library("arules")
+
+
+
+# Read training file along with header 
+
+
+Products<-read.csv("Amazon_products.csv",header=TRUE)
+print(Products)
+
+
+
+## Just look at first few lines of this file and  what  are  the  dimensions of the  file
+
+
+head(Products)
+dim(Products)
+
+
+# Using acast to convert above data as follows:
+#       m1  m2   m3   m4
+# u1    3   4    2    5
+# u2    1   6    5
+# u3    4   4    2    5
+
+
+product_cast<-acast(Products, user ~ Product+Date+City+Age+Gender)
+
+
+
+# Check the class of product_cast
+
+class(product_cast)
+
+
+#    Convert it as a matrix
+
+product_matrix<-as.matrix(product_cast)
+
+
+#Convert product_matrix into realRatingMatrix data structure
+#   realRatingMatrix is a recommenderlab sparse-matrix like data-structure
+
+product_r <- as(product_matrix, "realRatingMatrix")
+print(product_r)
+
+
+# view r in other possible ways
+
+as(product_r, "list")     # A list
+as(product_r, "matrix")   # A sparse matrix
+
+
+# I can turn it into data-frame
+
+head(as(product_r, "data.frame"))
+
+
+# # normalize the rating matrix
+
+product_r_m <- normalize(product_r)
+product_r_m
+as(product_r_m, "list")
+
+
+# Draw an image plot of raw-ratings & normalized ratings
+#  A column represents one specific movie and ratings by users
+#   are shaded.
+#   Note that some items are always rated 'BLUE' by most users
+#    while some items are not rated by many users
+#     On the other hand a few users always give high ratings
+#      as in some cases a series of black dots cut across items
+
+
+image(product_r, main = "Raw Ratings")       
+image(product_r_m, main = "Normalized Ratings")
+
+
+
+
+##

@@ -1,0 +1,86 @@
+---
+title: "SVM (Support Vector Machine)"
+author: "Big Datamatica"
+date: "16 August 2016"
+output: html_document
+---
+
+```{r}
+install.packages(c("e1071"),repos = "https://cloud.r-project.org/",dependencies = TRUE)
+library(e1071)
+```
+```{r}
+
+```
+
+setwd("E:/R ALGORITHM/UBCF(User-based collaborative filtering)")
+setwd("E:/R ALGORITHM/UBCF(User-based collaborative filtering)")
+iris<-read.csv("Flipkart.csv",header=TRUE)
+
+
+```{r}
+Flipkart_products<-read.csv("Flipkart.csv",header=TRUE)
+names(Flipkart_products)
+head(Flipkart_products,5)
+
+```
+
+
+
+
+```{r}
+y <- Flipkart_products$Prod
+x<-Flipkart_products[,-c(5)]
+```
+
+
+```{r}
+Flipkart_products_svm_model <- svm(Prod~.,data=Flipkart_products)
+summary(Flipkart_products_svm_model)
+```
+
+
+```{r}
+Amazon_products_svm_model <- svm(Prod~.,data=Amazon_products)
+summary(Flipkart_products_svm_model)
+```
+
+
+```{r}
+svm_model_Flipkart <- svm(x,y)
+summary(svm_model_Flipkart)
+```
+
+
+
+```{r}
+pred <- predict(svm_model_Flipkart,x)
+system.time(pred <- predict(svm_model_Flipkart,x))
+```
+
+
+
+```{r}
+table(pred,y)
+
+svm_tune_Flipkart<- tune(svm, train.x=x, train.y=y, 
+                 kernel="radial", ranges=list(cost=10^(-1:2), gamma=c(.5,1,2)))
+```
+
+
+```{r}
+svm_tune_Flipkart_after_tune <- svm(Prod ~ .,data=Flipkart_products, kernel="radial", cost=1, gamma=0.5)
+summary(svm_tune_Flipkart_after_tune)
+```
+
+
+
+
+```{r}
+pred <- predict(svm_tune_Flipkart_after_tune,)
+system.time(predict(svm_tune_Flipkart_after_tune,x))
+plot(pred,main="SVM")
+?plot
+```
+
+
